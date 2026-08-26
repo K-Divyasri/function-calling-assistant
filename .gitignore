@@ -1,0 +1,16 @@
+# Secrets — never commit a key
+.env
+
+# Python junk
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+
+# The generated database is reproducible from generate_data.py; keep it out.
+data/company.db

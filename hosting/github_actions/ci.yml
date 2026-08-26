@@ -1,0 +1,65 @@
+# GitHub Actions workflow for the Function-Calling Assistant.
+#
+# What this does: every time you push code or open a pull request, GitHub spins up
+# a fresh Linux machine, installs Python, installs pytest, and runs your tests. If
+# they pass you get a green checkmark; if they fail, a red X and a log to read.
+# It's free on public repos.
+#
+# The nice part for THIS project: the core assistant has ZERO runtime dependencies
+# (it's pure standard library — the calculator, the search, the database query, and
+# the offline fake model are all stdlib). The tests run entirely on that offline
+# fake model, so CI needs NO API key and NO network access. We install only pytest.
+#
+# WHERE THIS FILE GOES: copy it to ".github/workflows/ci.yml" at the ROOT of your
+# repo (the repo root is your build_from_scratch/ folder). GitHub only runs workflow
+# files that live under .github/workflows/.
+
+# The name shown in the repo's "Actions" tab.
+name: CI
+
+# "on" decides WHEN this runs. Here: on every push, and on every pull request.
+on:
+  push:
+  pull_request:
+
+# A workflow is made of one or more "jobs". We have one job, called "test".
+jobs:
+  test:
+    # The kind of machine to run on. ubuntu-latest is a standard, free Linux box.
+    # Your tests are pure Python, so they pass on Linux even though you develop on Windows.
+    runs-on: ubuntu-latest
+
+    # Run the whole job from inside build_from_scratch/ — that's where the package,
+    # the tests, and pyproject.toml live, and it's the repo root you push to GitHub.
+    # (If build_from_scratch/ IS your repo root, this "." is simply the checkout dir.)
+    defaults:
+      run:
+        working-directory: build_from_scratch
+
+    # "steps" run top to bottom on that machine.
+    steps:
+      # Step 1: download your repo's code onto the runner. Without this, the machine
+      # is empty and has nothing to test. "uses" pulls in a prebuilt, official action.
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      # Step 2: install Python. Pin a version so CI matches what you develop against.
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Step 3: install pytest — and ONLY pytest. The core assistant has no runtime
+      # dependencies, so there's nothing else to install. We deliberately do NOT
+      # install requirements.txt's optional extras (litellm, streamlit, requests):
+      # the tests don't need them, and skipping them keeps CI fast and network-free.
+      - name: Install pytest
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      # Step 4: run the tests. pyproject.toml tells pytest where the tests are and how
+      # to find the package, so a bare "pytest" from the repo root runs the whole suite
+      # (24 tests). It passes only if every test passes — no key, no network required.
+      - name: Run tests
+        run: pytest
