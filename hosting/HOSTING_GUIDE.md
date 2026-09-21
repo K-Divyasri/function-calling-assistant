@@ -2,7 +2,7 @@
 
 This project has two shippable things, and "hosting" covers both.
 
-The first is the **GitHub repo** — the polished repo root, with a clean
+The first is the **GitHub repo** - the polished repo root, with a clean
 README and a green CI checkmark that proves the tests pass on every push. That's the part a
 recruiter opens.
 
