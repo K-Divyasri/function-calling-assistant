@@ -2,7 +2,7 @@
 
 This project has two shippable things, and "hosting" covers both.
 
-The first is the **GitHub repo** — the polished `build_from_scratch/` folder, with a clean
+The first is the **GitHub repo** — the polished repo root, with a clean
 README and a green CI checkmark that proves the tests pass on every push. That's the part a
 recruiter opens.
 
@@ -16,8 +16,7 @@ so it runs on a free host with *no API key and no configuration at all*. The "us
 toggle only lights up if a key is present in the host's Secrets. That means you can deploy first
 and worry about keys never, or later.
 
-Everything below assumes you're working from inside `build_from_scratch/` — that folder is the
-repo root.
+Everything below assumes you're working from the repo root.
 
 ---
 
@@ -60,7 +59,7 @@ git config --global user.email "mathuransada@gmail.com"
 
 Some files belong on GitHub; some must never leave your laptop. The line between them is a
 file called `.gitignore` — a plain-text list of things Git pretends don't exist. The project
-ships one at the repo root. Open `build_from_scratch/.gitignore` and confirm it has at least:
+ships one at the repo root. Open `.gitignore` and confirm it has at least:
 
 ```
 .env
@@ -123,7 +122,7 @@ whole app on the offline brain with live weather, no key anywhere. Commit that a
 
 ## Step 3 — Make the local repo and commit
 
-From inside `build_from_scratch/` (the folder with `pyproject.toml` and `tool_agent/` in it):
+From the repo root (the folder with `pyproject.toml` and `tool_agent/` in it):
 
 ```powershell
 git init
@@ -164,7 +163,7 @@ tracked, you committed your secret — see troubleshooting at the bottom before 
 
 ### 4b. Connect and push
 
-Copy the repo URL from that page, then, still inside `build_from_scratch/`:
+Copy the repo URL from that page, then, still at the repo root:
 
 ```powershell
 git branch -M main
@@ -195,7 +194,7 @@ add a key if you want the "Real LLM (LiteLLM)" toggle to actually work.
 4. Fill in:
    - **Repository:** `YOURNAME/function-calling-assistant`
    - **Branch:** `main`
-   - **Main file path:** `app.py`  *(it lives at the repo root — `build_from_scratch/` is the root)*
+   - **Main file path:** `app.py`  *(it lives at the repo root)*
 5. Click **Deploy**. First build takes a couple of minutes while it installs Streamlit.
 6. When it's live you get a URL like `https://your-app.streamlit.app`. Share that.
 
@@ -217,7 +216,7 @@ Streamlit exposes secrets as environment variables, which is exactly what `has_a
 3. Name it `function-calling-assistant`, pick a license, and choose **Streamlit** as the SDK.
    Leave the hardware on the free CPU tier.
 4. A Space *is* a Git repo. The simplest way to fill it: clone the Space locally and copy your
-   `build_from_scratch/` contents in, or push your existing repo to the Space's remote. A Space
+   repo's contents in, or push your existing repo to the Space's remote. A Space
    expects `app.py` and `requirements.txt` at its root — which is exactly your layout.
 5. Hugging Face builds and serves it automatically. You get a public `...hf.space` URL.
 
@@ -236,16 +235,14 @@ here it's especially clean: **the core has zero runtime dependencies, so CI inst
 nothing else — no key, no network.**
 
 In this hosting folder there's a ready-to-use workflow at `github_actions/ci.yml`. A workflow
-only runs if it lives at `.github/workflows/` inside the repo. Copy it there. From the repo root
-(`build_from_scratch/`):
+only runs if it lives at `.github/workflows/` inside the repo. Copy it there. From the repo root:
 
 ```powershell
 mkdir .github\workflows
-copy ..\hosting\github_actions\ci.yml .github\workflows\ci.yml
+copy hosting\github_actions\ci.yml .github\workflows\ci.yml
 ```
 
-(Adjust the source path to wherever this `hosting/` folder sits relative to your repo — it lives
-one level up from `build_from_scratch/`, hence the `..\`.)
+(This `hosting/` folder sits at the repo root, so no `..\` is needed.)
 
 Open `.github\workflows\ci.yml` and read the comments — it's annotated line by line. Then:
 

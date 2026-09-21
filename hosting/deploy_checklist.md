@@ -3,7 +3,7 @@
 This is the project's "definition of done." Walk it top to bottom. Don't tick a box you
 haven't actually verified by running the command — "should work" isn't "works."
 
-Everything below runs from inside `build_from_scratch/` (the repo root).
+Everything below runs from the repo root.
 
 ## Runs locally
 

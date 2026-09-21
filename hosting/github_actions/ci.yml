@@ -11,7 +11,7 @@
 # fake model, so CI needs NO API key and NO network access. We install only pytest.
 #
 # WHERE THIS FILE GOES: copy it to ".github/workflows/ci.yml" at the ROOT of your
-# repo (the repo root is your build_from_scratch/ folder). GitHub only runs workflow
+# repo (the repo root is the folder with pyproject.toml). GitHub only runs workflow
 # files that live under .github/workflows/.
 
 # The name shown in the repo's "Actions" tab.
@@ -29,12 +29,8 @@ jobs:
     # Your tests are pure Python, so they pass on Linux even though you develop on Windows.
     runs-on: ubuntu-latest
 
-    # Run the whole job from inside build_from_scratch/ — that's where the package,
-    # the tests, and pyproject.toml live, and it's the repo root you push to GitHub.
-    # (If build_from_scratch/ IS your repo root, this "." is simply the checkout dir.)
-    defaults:
-      run:
-        working-directory: build_from_scratch
+    # The whole job runs from the repo root, where the package, the tests, and
+    # pyproject.toml live.
 
     # "steps" run top to bottom on that machine.
     steps:

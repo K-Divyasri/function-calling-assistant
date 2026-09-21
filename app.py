@@ -5,7 +5,7 @@ The point of this app is the *trace*: every reply comes with an expandable panel
 showing each tool the agent ran, the arguments it chose, and what came back. That
 "showing its work" is the whole lesson of the project.
 
-Run it from this folder (build_from_scratch/):
+Run it from the repo root:
 
     streamlit run app.py
 
